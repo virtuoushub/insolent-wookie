@@ -1,0 +1,20 @@
+plugins {
+    id 'war'
+    id "org.akhikhl.gretty" version "1.2.4"
+}
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+    compile 'org.apache.servicemix.specs:org.apache.servicemix.specs.jsr311-api-1.1.1:2.5.0'
+    compile 'com.sun.jersey:jersey-server:1.19'
+    testCompile 'junit:junit:4.12'
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.6'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+}

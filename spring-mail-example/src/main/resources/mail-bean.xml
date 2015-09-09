@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <context:component-scan base-package="org.colapietro.mail" />
+
+  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <property name="host" value="smtp.gmail.com" />
+    <property name="username" value="${email.username}" />
+    <property name="password" value="${email.password}" />
+    <!--
+    TLS port = 587
+    SSL port = 465
+    <property name="port" value="587" />
+    -->
+    <property name="port" value="465" />
+
+    <property name="javaMailProperties">
+      <props>
+        <prop key="mail.transport.protocol">smtp</prop>
+        <prop key="mail.smtp.auth">true</prop>
+        <prop key="mail.smtp.starttls.enable">true</prop>
+        <prop key="mail.smtp.socketFactory.port">465</prop>
+        <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+        <prop key="mail.smtp.socketFactory.fallback">false</prop>
+        <!-- Useful for debugging if authentication is not working.
+        <prop key="mail.debug">true</prop>
+        -->
+      </props>
+    </property>
+  </bean>
+
+  <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+    <property name="location">
+      <value>application.properties</value>
+    </property>
+    <property name="ignoreUnresolvablePlaceholders" value="true"/>
+  </bean>
+
+  <bean id="peteEmail" class="org.colapietro.mail.SimplerMailMessage">
+    <constructor-arg type="java.lang.String" value="${email.toAddress}" />
+    <constructor-arg type="java.lang.String" value="${email.subject}" />
+    <constructor-arg type="java.lang.String" value="${email.body}" />
+  </bean>
+
+  <bean id="propertyPlaceholderConfigurer"
+        class="org.jasypt.spring3.properties.EncryptablePropertyPlaceholderConfigurer">
+    <constructor-arg ref="configurationEncryptor" />
+    <property name="location" value="client_secrets.properties" />
+  </bean>
+
+  <bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+    <property name="config" ref="environmentVariablesConfiguration" />
+  </bean>
+
+  <bean id="environmentVariablesConfiguration"
+        class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+    <property name="algorithm" value="PBEWithMD5AndDES" />
+    <property name="passwordEnvName" value="JAVA_PBE_PASSWORD" />
+  </bean>
+</beans>

@@ -1,0 +1,49 @@
+plugins {
+  id 'groovy'
+  id 'application'
+  id 'net.researchgate.release'         version '2.2.1'
+  id "io.spring.dependency-management"  version "0.5.2.RELEASE"
+}
+
+group 'org.colapietro'
+version '0.1.0-SNAPSHOT'
+
+mainClassName = "org.colapietro.mail.SimplerMailMessageClient"
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    jcenter()
+}
+
+dependencyManagement {
+  imports {
+    def latestSpringFrameworkVersion    = '4.2.1.RELEASE'
+    def tutorialSpringFrameworkVersion  = '4.1.6.RELEASE'
+    def springFrameworkVersion          = latestSpringFrameworkVersion
+
+    mavenBom "org.springframework:spring-framework-bom:${springFrameworkVersion}"
+  }
+}
+
+dependencies {
+  compile 'org.codehaus.groovy:groovy-all:2.4.4'
+
+  compile("org.springframework:spring-oxm")
+  compile("org.springframework:spring-tx")
+  compile("org.springframework.boot:spring-boot-starter:1.2.5.RELEASE")
+  compile("org.quartz-scheduler:quartz:2.2.1")
+
+  compile("org.springframework:spring-context")
+  compile("org.springframework:spring-context-support")
+  compile 'com.sun.mail:javax.mail:1.5.3' //1.5.3+ breaks!?!
+
+  compile 'org.jasypt:jasypt:1.9.2:lite'
+  compile 'org.jasypt:jasypt-spring3:1.9.2'
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.6'
+  distributionUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+}

@@ -1,0 +1,8 @@
+.gradle/
+.idea/
+build/
+._*
+out/
+*.iml
+client_secrets.properties
+spring-mail-example/src/main/resources/application.properties

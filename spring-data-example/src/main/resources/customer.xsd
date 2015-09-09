@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="customer" type="customer"/>
+
+  <xs:complexType name="customer">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long" />
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="duns" type="xs:long"/>
+      <xs:element name="active" type="active"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="active">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Y"/>
+      <xs:enumeration value="N"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
